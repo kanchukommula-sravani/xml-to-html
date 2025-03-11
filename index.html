@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information Search</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Basic page styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Container for the form */
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Result styling */
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        #result p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .found {
+            color: green;
+        }
+
+        .not-found {
+            color: red;
+        }
+    </style>
+    <script>
+        function searchStudent() {
+            var hallTicket = document.getElementById("hallticket").value; // Get hall ticket number from input
+            var result = document.getElementById("result"); // Get div where result will be shown
+            result.innerHTML = ""; // Clear previous results
+
+            // Create a new XMLHttpRequest to load the XML file
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "student_info.xml", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var xmlDoc = xhr.responseXML;
+                    var students = xmlDoc.getElementsByTagName("student");
+
+                    // Loop through all students and search for matching hall ticket
+                    var found = false;
+                    for (var i = 0; i < students.length; i++) {
+                        var ticket = students[i].getElementsByTagName("hallticket")[0].childNodes[0].nodeValue;
+                        if (ticket == hallTicket) {
+                            found = true;
+                            var name = students[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+                            var course = students[i].getElementsByTagName("course")[0].childNodes[0].nodeValue;
+                            var dob = students[i].getElementsByTagName("dob")[0].childNodes[0].nodeValue;
+
+                            result.innerHTML = `<p class="found"><strong>Student Found!</strong></p>
+                                                <p><strong>Name:</strong> ${name}</p>
+                                                <p><strong>Course:</strong> ${course}</p>
+                                                <p><strong>Date of Birth:</strong> ${dob}</p>`;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        result.innerHTML = "<p class='not-found'>Student not found with Hall Ticket Number: " + hallTicket + "</p>";
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Search Student Information</h2>
+        <form onsubmit="event.preventDefault(); searchStudent();">
+            <label for="hallticket">Enter Hall Ticket Number:</label>
+            <input type="text" id="hallticket" name="hallticket" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+</body>
+</html>
+

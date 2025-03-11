@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+    <student>
+        <hallticket>22Q121</hallticket>
+        <name>siri</name>
+        <course>Computer Science</course>
+        <dob>2000-05-15</dob>
+    </student>
+    <student>
+        <hallticket>22Q122</hallticket>
+        <name>sanvi</name>
+        <course>Electrical Engineering</course>
+        <dob>2003-11-20</dob>
+    </student>
+    <student>
+        <hallticket>22Q123</hallticket>
+        <name>sravs</name>
+        <course>Computer Science</course>
+        <dob>2001-12-19</dob>
+    </student>
+    <student>
+        <hallticket>22Q123</hallticket>
+        <name>tej</name>
+        <course>Electrical Engineering</course>
+        <dob>2002-11-20</dob>
+    </student>
+</students>
